@@ -37,7 +37,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddRazorPages();
 // Register CardScrapeService with HttpClient (if you have a constructor that needs HttpClient).
 builder.Services.AddHttpClient<CardScrapeService>();
 
