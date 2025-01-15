@@ -335,7 +335,7 @@ namespace GGMTG.Services
                     currentUri = null;
                 }
             }
-
+            //return Ok(jsonString);
             return allCards;
         }
 

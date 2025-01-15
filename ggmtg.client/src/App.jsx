@@ -75,8 +75,8 @@ function ScryfallSetsComponent() {
     }, []);
 
     // 2. Fetch cards for a given 'searchUri' from Scryfall
-    const handleGetCards = (searchUri) => {
-        fetch(`/api/CardScrape/cards?uri=${encodeURIComponent(searchUri)}`)
+    const handleGetCards = () => {
+        fetch(`https://api.scryfall.com/cards/search?order=set&q=e%3Aneo&unique=prints`)
             .then((res) => res.json())
             .then((data) => {
                 // Instead of storing as a string, store the array directly
@@ -85,7 +85,9 @@ function ScryfallSetsComponent() {
                 //   { id: ..., name: ..., manaCost: ..., typeLine: ..., oracleText: ... },
                 //   ...
                 // ]
-                setCards(data);
+                //console.writeline(searchUri);
+                //setCards(data);
+                setCards(data.data);
             })
             .catch((err) => console.error(err));
     };
@@ -99,8 +101,8 @@ function ScryfallSetsComponent() {
         }
         // Example: "neo" => "https://api.scryfall.com/cards/search?order=set&q=e%3Aneo&unique=prints"
         //const scryfallUri = `https://api.scryfall.com/cards/search?order=set&q=e%3A${searchCode}&unique=prints`;
-        const scryfallUri =  "https://api.scryfall.com/cards/search?order=set&q=e%3Aneo&unique=prints";
-        handleGetCards(scryfallUri);
+        //const scryfallUri =  "https://api.scryfall.com/cards/search?order=set&q=e%3Aneo&unique=prints";
+        handleGetCards();
     };
 
     return (
