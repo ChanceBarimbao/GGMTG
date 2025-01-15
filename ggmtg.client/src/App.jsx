@@ -1,51 +1,61 @@
+////import React from "react";
+//import CardList from "./components/CardList";
+
+//function App() {
+//    return (
+//        <div>
+//            <h1>My Card Scraper</h1>
+//            <CardList />
+//        </div>
+//    );
+//}
+
+//export default App;
 import { useEffect, useState } from 'react';
-import './App.css';
 
-function App() {
-    const [forecasts, setForecasts] = useState();
+function ScryfallSetsComponent() {
+    const [sets, setSets] = useState([]);
+    const [cardsJson, setCardsJson] = useState('');
 
+    // Fetch the sets from your .NET backend, which calls Scryfall
     useEffect(() => {
-        populateWeatherData();
+        fetch('/api/CardScrape/sets')
+            .then((res) => res.json())
+            .then((data) => setSets(data))
+            .catch((err) => console.error(err));
     }, []);
 
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tableLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
+    const handleGetCards = (searchUri) => {
+        // Your .NET endpoint expects ?uri=...
+        fetch(`/api/CardScrape/cards?uri=${encodeURIComponent(searchUri)}`)
+            .then((res) => res.json())
+            .then((data) => {
+                // data is still JSON. We'll just show it as a string.
+                setCardsJson(JSON.stringify(data, null, 2));
+            })
+            .catch((err) => console.error(err));
+    };
 
     return (
         <div>
-            <h1 id="tableLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
+            <h1></h1>
+            <ul>
+                {sets.map((s) => (
+                    <li key={s.Id}>
+                        <strong>{s.Name}</strong> ({s.Code})
+                        &nbsp;
+                        <button onClick={() => handleGetCards(s.SearchUri)}>
+                            Get Cards
+                        </button>
+                    </li>
+                ))}
+            </ul>
+
+            <h2>Cards JSON:</h2>
+            <pre>{cardsJson}</pre>
         </div>
     );
-    
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        if (response.ok) {
-            const data = await response.json();
-            setForecasts(data);
-        }
-    }
 }
 
-export default App;
+export default ScryfallSetsComponent;
+
