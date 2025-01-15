@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GGMTG.Server", "GGMTG.Server\GGMTG.Server.csproj", "{BDD34AA0-1B47-4D33-8D99-9302A2A4D26D}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "ggmtg.client", "ggmtg.client\ggmtg.client.esproj", "{19B63876-7488-48C6-B8DA-02B815824F7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDD34AA0-1B47-4D33-8D99-9302A2A4D26D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDD34AA0-1B47-4D33-8D99-9302A2A4D26D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDD34AA0-1B47-4D33-8D99-9302A2A4D26D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDD34AA0-1B47-4D33-8D99-9302A2A4D26D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B63876-7488-48C6-B8DA-02B815824F7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19B63876-7488-48C6-B8DA-02B815824F7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19B63876-7488-48C6-B8DA-02B815824F7A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{19B63876-7488-48C6-B8DA-02B815824F7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19B63876-7488-48C6-B8DA-02B815824F7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B63876-7488-48C6-B8DA-02B815824F7A}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

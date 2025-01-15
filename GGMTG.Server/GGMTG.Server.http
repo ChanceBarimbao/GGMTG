@@ -1,0 +1,6 @@
+@GGMTG.Server_HostAddress = http://localhost:5296
+
+GET {{GGMTG.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
