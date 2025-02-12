@@ -1,0 +1,139 @@
+/* Prevent overflow and hide scrollbars */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Hide both vertical and horizontal scrollbars */
+}
+
+/* Container to hold everything */
+.container {
+    display: flex;
+    height: 100vh; /* Full height */
+    color: #333; /* Default text color */
+}
+
+/* Left Sidebar for Sets */
+.sets-sidebar {
+    width: 12.5%; /* 1/8th of the width */
+    background-color: #f4f4f4;
+    padding: 20px;
+    overflow-y: auto;
+    height: 90%;
+    border-right: 1px solid #ccc;
+    color: #333; /* Set text color for sidebar */
+}
+
+/* Search Form at the Top */
+.search-form {
+    width: 100%;
+    height: 12.5%; /* 1/8th of the height */
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-bottom: 1px solid #ddd;
+    color: #333; /* Set text color for search bar */
+}
+
+    .search-form input {
+        padding: 10px;
+        width: 200px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        color: #333; /* Set text color for input */
+    }
+
+    .search-form button {
+        padding: 10px 20px;
+        background-color: #9333ea;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .search-form button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+/* Main Content Area for Results */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    width: 87.5%; /* Remaining width */
+    height: 100%;
+    padding: 20px;
+    color: #333; /* Set text color for results */
+}
+
+.search-results {
+    flex-grow: 1; /* Takes up remaining space */
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto;
+    color: #333; /* Set text color for results */
+}
+
+    .search-results ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .search-results li {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: #333; /* Set text color for result items */
+    }
+
+/* Styling for the set list */
+.sets-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .sets-list li {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        color: #333; /* Set text color for set items */
+    }
+
+        .sets-list li code {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+/* Loading spinner */
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3b82f6;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 20px auto;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
