@@ -1,0 +1,93 @@
+/* Ensure the page fills the full height */
+/* Ensure the page fills the full height */
+html, body {
+    height: 100%; /* Full height for HTML and body */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+    width: 100%
+}
+
+.welcome-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Use 100vh to ensure it fills the viewport */
+    width: 100vw; /* Use 100vh to ensure it fills the viewport */
+    background: linear-gradient(to bottom right, #3b82f6, #9333ea);
+    font-family: 'Arial', sans-serif;
+    padding: 0 0px; /* Allow some padding for small screens */
+    box-sizing: border-box;
+}
+
+#root {
+    width: 100%;
+    height: 100%;
+    background: none; /* Ensure no background color or other styles */
+    margin: 0;
+    padding: 0;
+}
+
+.welcome-card {
+    background-color: white;
+    color: #333;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 600px; /* Ensure it's not too wide */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the content within the card */
+}
+
+/* Rest of your CSS remains the same */
+.welcome-title {
+    font-size: 3rem; /* Larger title */
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.brand-name {
+    color: #3b82f6;
+}
+
+.welcome-description {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.welcome-nav {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.welcome-btn {
+    display: inline-block;
+    padding: 14px 35px; /* Larger buttons */
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn {
+    background-color: #3b82f6; /* Blue */
+}
+
+    .login-btn:hover {
+        background-color: #2563eb; /* Darker blue */
+    }
+
+.signup-btn {
+    background-color: #9333ea; /* Purple */
+}
+
+    .signup-btn:hover {
+        background-color: #7e22ce; /* Darker purple */
+    }

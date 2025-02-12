@@ -1,0 +1,88 @@
+/* Reset default styles */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    height: 100%;
+    background: linear-gradient(to right, #ff7e5f, #feb47b); /* Gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Center the form */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw; /* Make sure container takes full width */
+    height: 100vh; /* Make sure container takes full height */
+}
+
+/* Style the form container */
+form {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+}
+
+/* Header styles */
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+/* Label styles */
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+}
+
+/* Input fields */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9; /* Light background for the inputs */
+}
+
+    /* Input field focus state */
+    input:focus {
+        border-color: #feb47b;
+        outline: none;
+    }
+
+/* Button styles */
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff7e5f;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    /* Button hover state */
+    button:hover {
+        background-color: #feb47b;
+    }
+
+/* Optional: Add some space between form fields */
+div {
+    margin-bottom: 20px;
+}
