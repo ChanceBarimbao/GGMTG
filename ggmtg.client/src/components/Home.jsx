@@ -10,7 +10,7 @@ function Home() {
                 <nav className="welcome-nav">
                     <Link to="/login" className="welcome-btn login-btn">Login</Link>
                     <Link to="/signup" className="welcome-btn signup-btn">Signup</Link>
-                    <Link to="/search" classname ="Card view card-btn"> Continue as Guest</Link>
+                    <Link to="/search" className ="Card view card-btn"> Continue as Guest</Link>
                 </nav>
             </div>
         </div>

@@ -2,20 +2,21 @@
 import './Sets.css';
 
 function ScryfallSetsComponent() {
-    const [allSets, setAllSets] = useState([]);  // All sets fetched from Scryfall
-    const [cards, setCards] = useState([]);      // Cards from selected set
-    const [searchCode, setSearchCode] = useState(''); // Search code entered by user
-    const [loadingSets, setLoadingSets] = useState(true); // Loading state for sets
-    const [loadingCards, setLoadingCards] = useState(false); // Loading state for cards
-    const [error, setError] = useState('');    // Error handling
+    const [allSets, setAllSets] = useState([]);
+    const [cards, setCards] = useState([]);
+    const [searchCode, setSearchCode] = useState('');
+    const [loadingSets, setLoadingSets] = useState(true);
+    const [loadingCards, setLoadingCards] = useState(false);
+    const [error, setError] = useState('');
 
-    // Fetch all Scryfall sets on mount
+    const userEmail = localStorage.getItem('email');
+
     useEffect(() => {
         fetch('https://api.scryfall.com/sets')
             .then((res) => res.json())
             .then((data) => {
                 if (data.data) {
-                    setAllSets(data.data); // Set fetched sets
+                    setAllSets(data.data);
                 } else {
                     setError('Unexpected data structure');
                 }
@@ -24,7 +25,6 @@ function ScryfallSetsComponent() {
             .finally(() => setLoadingSets(false));
     }, []);
 
-    // Fetch cards for a specific set code
     const handleGetCardsByCode = (code) => {
         setLoadingCards(true);
         const scryfallUri = `https://api.scryfall.com/cards/search?order=set&q=e%3A${code}&unique=prints`;
@@ -32,16 +32,15 @@ function ScryfallSetsComponent() {
             .then((res) => res.json())
             .then((data) => {
                 if (data.data) {
-                    setCards(data.data); // Set fetched cards
+                    setCards(data.data);
                 } else {
-                    setCards([]); // Empty result if no cards are found
+                    setCards([]);
                 }
             })
             .catch((err) => setError('Error fetching cards: ' + err.message))
             .finally(() => setLoadingCards(false));
     };
 
-    // Handle the form submit for searching cards
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (!searchCode) {
@@ -51,41 +50,60 @@ function ScryfallSetsComponent() {
         handleGetCardsByCode(searchCode);
     };
 
-    // Show a loading message if sets are still loading
-    if (loadingSets) return <p>Loading sets...</p>;
+    const handleButtonClick = () => {
+        if (userEmail) {
+            // Logout: clear the email from localStorage and reload the page
+            localStorage.removeItem('email');
+            window.location.reload();
+        } else {
+            // Home: you can modify this to redirect to a login page or home page
+            window.location.href = '/'; // Redirect to home or login page
+        }
+    };
 
-    // If there's an error fetching sets or cards
+    if (loadingSets) return <p>Loading sets...</p>;
     if (error) return <p className="error-message">Error: {error}</p>;
 
     return (
         <div className="container">
-            {/* Left Sidebar for Sets */}
-            <div className="sets-sidebar">
-                <h3>All Scryfall Sets</h3>
-                {allSets.length === 0 ? (
-                    <p>No sets available.</p>
-                ) : (
-                    <ul className="sets-list">
-                        {allSets.map((s) => (
-                            <li key={s.id}>
-                                <code>{s.code}</code> → {s.name}
-                                <button
-                                    onClick={() => handleGetCardsByCode(s.code)}
-                                    className="show-cards-btn"
-                                >
-                                    Show Cards
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                )}
+            <div className="sidebar">
+                {/* Display User's Email */}
+                <div className="user-info">
+                    <p>Logged in as: <strong>{userEmail || 'Guest'}</strong></p>
+                </div>
+
+                {/* Logout/Home Button */}
+                <div className="logout-home-button">
+                    <button onClick={handleButtonClick}>
+                        {userEmail ? 'Logout' : 'Home'}
+                    </button>
+                </div>
+
+                {/* Left Sidebar for Sets */}
+                <div className="sets-sidebar">
+                    <h3>All Scryfall Sets</h3>
+                    {allSets.length === 0 ? (
+                        <p>No sets available.</p>
+                    ) : (
+                        <ul className="sets-list">
+                            {allSets.map((s) => (
+                                <li key={s.id}>
+                                    <code>{s.code}</code> → {s.name}
+                                    <button
+                                        onClick={() => handleGetCardsByCode(s.code)}
+                                        className="show-cards-btn"
+                                    >
+                                        Show Cards
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             </div>
 
-            {/* Main Content Area */}
             <div className="main-content">
                 <h2>MTG Set Search</h2>
-
-                {/* Search form */}
                 <form onSubmit={handleSearchSubmit} className="search-form">
                     <input
                         type="text"
@@ -98,10 +116,8 @@ function ScryfallSetsComponent() {
                     </button>
                 </form>
 
-                {/* Loading spinner */}
                 {loadingCards && <div className="loading-spinner"></div>}
 
-                {/* Display fetched cards */}
                 <div className="search-results">
                     <h3>Fetched Cards:</h3>
                     {cards.length === 0 ? (

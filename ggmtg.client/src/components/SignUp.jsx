@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook for navigation
 import './SignUp.css';
 
 function SignUp() {
@@ -8,6 +9,7 @@ function SignUp() {
     const [loading, setLoading] = useState(false); // For loading state
     const [error, setError] = useState(''); // For error messages
     const [success, setSuccess] = useState(false); // For success message
+    const navigate = useNavigate(); // Initialize the useNavigate hook
 
     // Handle form submission
     const handleSubmit = async (e) => {
@@ -29,7 +31,7 @@ function SignUp() {
 
         try {
             // Making POST request to the backend API (replace with your actual API endpoint)
-            const response = await fetch('https:////localhost:5296/api/auth/register', {
+            const response = await fetch('https://localhost:7212/api/auth/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,8 +60,11 @@ function SignUp() {
             setPassword('');
             setReEnterPassword('');
 
-            // Optionally, you can redirect to the login page or another page
-            // window.location.href = '/login'; // For example, redirect to login page
+            // Store email in localStorage (or in state)
+            localStorage.setItem('email', email); // Store email in localStorage
+
+            // Redirect to the sets page after successful sign-up
+            navigate('/search'); // Use navigate to redirect to /sets
 
         } catch (err) {
             // Catch any errors from the fetch call
