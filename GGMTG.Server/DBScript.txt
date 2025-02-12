@@ -1,0 +1,21 @@
+CREATE TABLE Users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+CREATE TABLE cards (
+    id UUID PRIMARY KEY,       -- Unique identifier from Scryfall
+    name TEXT NOT NULL,        -- Card name
+    set_code VARCHAR(10),      -- Set code (e.g., 'neo', 'mh2')
+    set_name TEXT,             -- Full name of the set
+    mana_cost TEXT,            -- Mana cost (e.g., "{1}{B}{G}")
+    type_line TEXT,            -- Card type (e.g., "Creature — Elf Druid")
+    oracle_text TEXT,          -- Card rules text
+    power VARCHAR(10),         -- Power (for creatures)
+    toughness VARCHAR(10),     -- Toughness (for creatures)
+    rarity VARCHAR(20),        -- Rarity (common, uncommon, rare, mythic)
+    artist TEXT,               -- Artist name
+    image_url TEXT,            -- Image URL for the card
+    scryfall_uri TEXT,         -- Scryfall link to the card
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- Timestamp for when card is added
+);
