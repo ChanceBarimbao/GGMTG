@@ -1,0 +1,23 @@
+.card-details-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card-content {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.card-image {
+    max-width: 300px;
+    border-radius: 8px;
+}
+
+.card-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
