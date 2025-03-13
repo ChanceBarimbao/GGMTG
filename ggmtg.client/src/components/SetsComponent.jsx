@@ -80,9 +80,12 @@ function ScryfallSearchComponent() {
 
     return (
         <div className="search-container">
-            <button className="navigate-button" onClick={() => navigate('/sim')}>Go to Simulate Pack</button>
+            <div className="right-nav">
+                <button className="navigate-button" onClick={() => navigate('/sim')}>
+                    Go to Simulate Pack
+                </button>
+            </div>
             <h2>MTG Card Search</h2>
-
             <form onSubmit={handleSearchSubmit} className="search-form">
                 <select value={searchType} onChange={(e) => setSearchType(e.target.value)}>
                     <option value="name">Search by Name</option>
@@ -99,10 +102,8 @@ function ScryfallSearchComponent() {
                     {loadingCards ? 'Searching...' : 'Search'}
                 </button>
             </form>
-
             {loadingCards && <div className="loading-spinner"></div>}
             {error && <p className="error-message">Error: {error}</p>}
-
             <div className="search-results">
                 {cards.length === 0 ? (
                     <p>No cards to display yet...</p>
@@ -118,6 +119,7 @@ function ScryfallSearchComponent() {
             </div>
         </div>
     );
+
 }
 
 export default ScryfallSearchComponent;

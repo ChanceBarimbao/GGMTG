@@ -25,7 +25,6 @@ function PackSimulator() {
 
             const mergedPacks = {};
             data.data.forEach(set => {
-                // Remove 'tokens' and 'booster' variants from merging process
                 if (/(Token|Booster)/i.test(set.name)) return;
                 const baseName = set.name.replace(/(Commander|Draft|Set|Collector)/i, '').trim();
                 if (!mergedPacks[baseName]) {
@@ -53,7 +52,7 @@ function PackSimulator() {
             for (const code of selectedSet.codes) {
                 const response = await fetch(`https://api.scryfall.com/cards/search?q=e:${code}&unique=prints`);
                 const data = await response.json();
-                if (data.object === 'error') continue; // Skip failed fetches
+                if (data.object === 'error') continue;
                 if (data.data) {
                     allCards = [...allCards, ...data.data];
                 }
@@ -92,7 +91,7 @@ function PackSimulator() {
         pack.push(Math.random() < 0.125 && rarities.mythic.length > 0 ? getRandomFromPool(rarities.mythic, 1)[0] : getRandomFromPool(rarities.rare, 1)[0]);
         pack.push(...getRandomFromPool(cards, 1));
 
-        return pack.slice(0, 7); // Ensure only 7 cards are selected
+        return pack.slice(0, 7);
     };
 
     const handleCardClick = (card) => {
@@ -102,7 +101,9 @@ function PackSimulator() {
 
     return (
         <div className="pack-simulator">
-            <button className="navigate-button" onClick={() => navigate('/search')}>Back to Search</button>
+            <div className="left-nav">
+                <button className="navigate-button" onClick={() => navigate('/search')}>Back to Search</button>
+            </div>
             <h2>MTG Pack Simulator</h2>
 
             <label>Choose a booster pack: </label>
