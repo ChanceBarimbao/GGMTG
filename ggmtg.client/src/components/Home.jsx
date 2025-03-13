@@ -1,7 +1,12 @@
-//import React from 'react'
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
+
 function Home() {
+    useEffect(() => {
+        localStorage.clear(); // Clear all local storage when the home page loads
+    }, []);
+
     return (
         <div className="welcome-container">
             <div className="welcome-card">
@@ -10,10 +15,11 @@ function Home() {
                 <nav className="welcome-nav">
                     <Link to="/login" className="welcome-btn login-btn">Login</Link>
                     <Link to="/signup" className="welcome-btn signup-btn">Signup</Link>
-                    <Link to="/search" className ="Card view card-btn"> Continue as Guest</Link>
+                    <Link to="/search" className="Card view card-btn"> Continue as Guest</Link>
                 </nav>
             </div>
         </div>
     );
 }
-export default Home
+
+export default Home;

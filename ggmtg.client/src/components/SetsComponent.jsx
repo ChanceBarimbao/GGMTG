@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Sets.css';
 
@@ -10,49 +10,69 @@ function ScryfallSearchComponent() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    // Load last searched query from localStorage on mount
+    useEffect(() => {
+        const savedQuery = localStorage.getItem('lastSearchQuery');
+        const savedType = localStorage.getItem('lastSearchType');
+
+        if (savedQuery) {
+            setSearchQuery(savedQuery);
+            if (savedType) {
+                setSearchType(savedType);
+            }
+            fetchCards(savedQuery, savedType || 'name'); // Fetch last searched cards
+        }
+    }, []);
+
     const handleSearchSubmit = (e) => {
         e.preventDefault();
         if (!searchQuery) {
             alert('Please enter a search term.');
             return;
         }
+
+        // Save search query and type to localStorage
+        localStorage.setItem('lastSearchQuery', searchQuery);
+        localStorage.setItem('lastSearchType', searchType);
+
         fetchCards(searchQuery, searchType);
-    }
-        const fetchCards = (query, type) => {
-            setLoadingCards(true);
+    };
 
-            let searchParam = '';
-            switch (type) {
-                case 'name':
-                    searchParam = `name:${query}`;
-                    break;
-                case 'type':
-                    searchParam = `type:${query}`;
-                    break;
-                case 'description': // Search in card text (oracle)
-                case 'keyword': // NEW: Search for keywords like Haste, Vigilance, Flying
-                    searchParam = `oracle:${query}`;
-                    break;
-                default:
-                    searchParam = query;
-            }
+    const fetchCards = (query, type) => {
+        setLoadingCards(true);
 
-            // Apply "unique=prints" ONLY when searching by name, creature, or type
-            const excludeUniquePrints = type === 'description' || type === 'keyword';
-            const scryfallUri = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(searchParam)}${excludeUniquePrints ? '' : '&unique=prints'}`;
+        let searchParam = '';
+        switch (type) {
+            case 'name':
+                searchParam = `name:${query}`;
+                break;
+            case 'type':
+                searchParam = `type:${query}`;
+                break;
+            case 'description': // Search in card text (oracle)
+            case 'keyword': // NEW: Search for keywords like Haste, Vigilance, Flying
+                searchParam = `oracle:${query}`;
+                break;
+            default:
+                searchParam = query;
+        }
 
-            fetch(scryfallUri)
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.data) {
-                        setCards(data.data);
-                    } else {
-                        setCards([]);
-                    }
-                })
-                .catch((err) => setError('Error fetching cards: ' + err.message))
-                .finally(() => setLoadingCards(false));
-        };
+        const excludeUniquePrints = type === 'description' || type === 'keyword';
+        const scryfallUri = `https://api.scryfall.com/cards/search?q=${encodeURIComponent(searchParam)}${excludeUniquePrints ? '' : '&unique=prints'}`;
+
+        fetch(scryfallUri)
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.data) {
+                    setCards(data.data);
+                } else {
+                    setCards([]);
+                }
+            })
+            .catch((err) => setError('Error fetching cards: ' + err.message))
+            .finally(() => setLoadingCards(false));
+    };
+
     const handleCardClick = (card) => {
         localStorage.setItem('card', JSON.stringify(card));
         navigate(`/Card`);
@@ -60,6 +80,7 @@ function ScryfallSearchComponent() {
 
     return (
         <div className="search-container">
+            <button className="navigate-button" onClick={() => navigate('/sim')}>Go to Simulate Pack</button>
             <h2>MTG Card Search</h2>
 
             <form onSubmit={handleSearchSubmit} className="search-form">

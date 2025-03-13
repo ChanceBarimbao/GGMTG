@@ -5,6 +5,7 @@ import SignUp from './components/SignUp.jsx'
 import Home from './components/Home.jsx'
 import ScryfallSetsComponent from './components/SetsComponent.jsx'
 import Card from './components/Card.jsx'
+import Sim from './components/Packsim.jsx'
 
 function App() {
     return (
@@ -15,7 +16,7 @@ function App() {
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/search" element={<ScryfallSetsComponent />} />
                 <Route path="/card" element={<Card />} />
-
+                <Route path="/sim" element={<Sim />} />
             </Routes>
         </Router>
     )
