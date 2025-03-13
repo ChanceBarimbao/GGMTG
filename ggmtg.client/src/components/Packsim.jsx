@@ -4,7 +4,7 @@ import './Packsim.css';
 
 function PackSimulator() {
     const [packs, setPacks] = useState([]);
-    const [selectedSet, setSelectedSet] = useState(localStorage.getItem('selectedSet') || '');
+    const [selectedPack, setSelectedPack] = useState(localStorage.getItem('selectedPack') || '');
     const [openedCards, setOpenedCards] = useState([]);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -14,44 +14,85 @@ function PackSimulator() {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem('selectedSet', selectedSet);
-    }, [selectedSet]);
+        localStorage.setItem('selectedPack', selectedPack);
+    }, [selectedPack]);
 
     const fetchPacks = async () => {
         try {
             const response = await fetch('https://api.scryfall.com/sets');
             const data = await response.json();
-            if (data.data) {
-                setPacks(data.data);
-            }
+            if (data.object === 'error') throw new Error(data.details);
+
+            const mergedPacks = {};
+            data.data.forEach(set => {
+                // Remove 'tokens' and 'booster' variants from merging process
+                if (/(Token|Booster)/i.test(set.name)) return;
+                const baseName = set.name.replace(/(Commander|Draft|Set|Collector)/i, '').trim();
+                if (!mergedPacks[baseName]) {
+                    mergedPacks[baseName] = { ...set, codes: [set.code] };
+                } else {
+                    mergedPacks[baseName].codes.push(set.code);
+                }
+            });
+            setPacks(Object.values(mergedPacks));
         } catch (error) {
             console.error('Error fetching packs:', error);
         }
     };
 
     const fetchPackCards = async () => {
-        if (!selectedSet) return;
+        if (!selectedPack) return;
         setLoading(true);
         setOpenedCards([]);
 
         try {
-            const response = await fetch(`https://api.scryfall.com/cards/search?q=set:${selectedSet}`);
-            const data = await response.json();
-            if (!data.data) throw new Error('No cards found');
+            const selectedSet = packs.find(pack => pack.name === selectedPack);
+            if (!selectedSet) throw new Error('Pack not found');
 
-            const cards = data.data;
-            const selectedCards = getRandomCards(cards, 14); // Open a pack with 14 random cards
+            let allCards = [];
+            for (const code of selectedSet.codes) {
+                const response = await fetch(`https://api.scryfall.com/cards/search?q=e:${code}&unique=prints`);
+                const data = await response.json();
+                if (data.object === 'error') continue; // Skip failed fetches
+                if (data.data) {
+                    allCards = [...allCards, ...data.data];
+                }
+            }
 
+            if (allCards.length === 0) throw new Error('No cards found');
+
+            const selectedCards = generateBoosterPack(allCards);
             setOpenedCards(selectedCards);
         } catch (error) {
-            console.error('Error fetching cards:', error);
+            console.error('Error fetching booster:', error);
         }
 
         setLoading(false);
     };
 
-    const getRandomCards = (cards, count) => {
-        return cards.sort(() => 0.5 - Math.random()).slice(0, count);
+    const generateBoosterPack = (cards) => {
+        const rarities = {
+            common: cards.filter(card => card.rarity === 'common'),
+            uncommon: cards.filter(card => card.rarity === 'uncommon'),
+            rare: cards.filter(card => card.rarity === 'rare'),
+            mythic: cards.filter(card => card.rarity === 'mythic')
+        };
+
+        const getRandomFromPool = (pool, count) => {
+            let selection = new Set();
+            while (selection.size < count && pool.length > 0) {
+                selection.add(pool.splice(Math.floor(Math.random() * pool.length), 1)[0]);
+            }
+            return Array.from(selection);
+        };
+
+        let pack = [];
+        pack.push(...getRandomFromPool(rarities.common, 3));
+        pack.push(...getRandomFromPool(rarities.uncommon, 2));
+        pack.push(Math.random() < 0.125 && rarities.mythic.length > 0 ? getRandomFromPool(rarities.mythic, 1)[0] : getRandomFromPool(rarities.rare, 1)[0]);
+        pack.push(...getRandomFromPool(cards, 1));
+
+        return pack.slice(0, 7); // Ensure only 7 cards are selected
     };
 
     const handleCardClick = (card) => {
@@ -64,15 +105,15 @@ function PackSimulator() {
             <button className="navigate-button" onClick={() => navigate('/search')}>Back to Search</button>
             <h2>MTG Pack Simulator</h2>
 
-            <label>Choose a set: </label>
-            <select value={selectedSet} onChange={(e) => setSelectedSet(e.target.value)}>
-                <option value="">Select a set</option>
-                {packs.map((set) => (
-                    <option key={set.code} value={set.code}>{set.name}</option>
+            <label>Choose a booster pack: </label>
+            <select value={selectedPack} onChange={(e) => setSelectedPack(e.target.value)}>
+                <option value="">Select a booster</option>
+                {packs.map((pack) => (
+                    <option key={pack.name} value={pack.name}>{pack.name} Booster</option>
                 ))}
             </select>
 
-            <button onClick={fetchPackCards} disabled={loading || !selectedSet}>
+            <button onClick={fetchPackCards} disabled={loading || !selectedPack}>
                 {loading ? 'Opening...' : 'Open Pack'}
             </button>
 
